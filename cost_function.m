@@ -11,7 +11,7 @@ function result = cost_function(initParam)
 
     
     % iterate over all the Fs matrices(10x10) to get the two equal singular values,
-    % the result of svd function will be save in U E V and the singulr
+    % the result of svd function will be save in (~ E ~) and the singulr
     % values are in E matrix, the diagonal elemtents so E(1,1) is the first
     % singular value and E(2,2) is the second value 
     for i=1:size(Fs,3) 
