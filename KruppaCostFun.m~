@@ -27,11 +27,13 @@ function result = KruppaCostFun(initParams)
 
             % find the F.norm of eqs 
             eqsNorm = norm(eqs,'fro');
-
-            [~,E,~] = svd(Essintial);
-            result = (E(1,1) - E(2,2)) / (E(1,1) + E(2,2)); % first cost function 
-            %result = (E(1,1) - E(2,2)) / E(2,2); % seocnd cost function 
-
+            
+            % Find the epipole e_ij which is the projection of the camera i
+            % center  on camera j, and the epipole can be found by
+            % extracting the SVD of the fundimental matrix F_ij transposed and we obtain U,E,V 
+            % matrices and e_ji is the last column of V transpose
+            [~,~,V] = svd(Fs(:,:,i,j)');
+            
         end
 
     end
