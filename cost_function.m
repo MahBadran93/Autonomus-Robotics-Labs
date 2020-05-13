@@ -2,7 +2,7 @@ function result = cost_function(initParam)
 
     global Fs;
     % initial camera intrinsics
-    % reshape to 3x3 because the iniParam is sent as 1x4 vector with the
+    % reshape to 3x3 because the iniParam is sent as 1x5 vector with the
     % values to be optimised
     CameraIntrinsics = [initParam(1) initParam(2) initParam(3); 0 initParam(4) initParam(5); 0 0 1];
     result = 0; % result initalisation
@@ -18,8 +18,8 @@ function result = cost_function(initParam)
         for j=i+1:size(Fs,4)    
             Essintial = CameraIntrinsics' * Fs(:,:,i,j) * CameraIntrinsics;    
             [~,E,~] = svd(Essintial);
-            result = (E(1,1) - E(2,2)) / (E(1,1) + E(2,2)); % first cost function 
-            %result = (E(1,1) - E(2,2)) / E(2,2); % seocnd cost function 
+            result = result + (E(1,1) - E(2,2)) / (E(1,1) + E(2,2)); % first cost function 
+            %result = result +  (E(1,1) - E(2,2)) / E(2,2); % seocnd cost function 
 
         end
         
