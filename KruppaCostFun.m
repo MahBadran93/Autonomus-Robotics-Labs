@@ -4,7 +4,7 @@ function result = KruppaCostFun(initParams)
     global Fs
 
     % Summation Result initalize 
-    result = ones(5,1);
+    result = [];
 
     % Matrix Form of initial intrinsics 
     CameraIntrinsics = [initParams(1) initParams(2) initParams(3); 0 initParams(4) initParams(5); 0 0 1];
@@ -16,7 +16,7 @@ function result = KruppaCostFun(initParams)
     % conic of lines in the image plane is represented by inverese of w and
     % the intrinsic parameters can be found directly 
     Winv = CameraIntrinsics * CameraIntrinsics';
- 
+    count = 1
  
     % Apply the cost function to solve Kruppas equation
     for i=1:size(Fs,3) 
@@ -47,15 +47,12 @@ function result = KruppaCostFun(initParams)
             eqs2Norm = norm(eqs2,'fro');
             
             % Cost function Classical
-            result = (eqs/eqsNorm - eqs2/eqs2Norm);
-            disp(size(result));
-            
-            
+            %result(count) = (eqs/eqsNorm - eqs2/eqs2Norm);
+             result(count)= norm(((eqs/eqsNorm) - (eqs2/eqs2Norm)),'fro');
+             count = count + 1
         end
 
     end
-
- 
 
 end
 
