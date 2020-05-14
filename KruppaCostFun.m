@@ -4,14 +4,14 @@ function result = KruppaCostFun(initParams)
     global Fs
 
     % Summation Result initalize 
-    result = 0
+    result = ones(5,1);
 
     % Matrix Form of initial intrinsics 
     CameraIntrinsics = [initParams(1) initParams(2) initParams(3); 0 initParams(4) initParams(5); 0 0 1];
 
     %image of absolute conics(conic of points in the image plane) depends on the intrinsic parameters of the
     %camera which allows to be recovered 
-    w = inv(CameraIntrinsics)' * inv(CameraIntrinsics);
+    %w = inv(CameraIntrinsics)' * inv(CameraIntrinsics);
  
     % conic of lines in the image plane is represented by inverese of w and
     % the intrinsic parameters can be found directly 
@@ -21,7 +21,9 @@ function result = KruppaCostFun(initParams)
     % Apply the cost function to solve Kruppas equation
     for i=1:size(Fs,3) 
         for j=i+1:size(Fs,4)   
-            
+            if(i==j)
+                continue;
+            end    
             % Apply Classical Kruppa's equations which can be donated by Fij * Winv * 
             % Fij'
             eqs = Fs(:,:,i,j) * Winv * Fs(:,:,i,j)';  
@@ -36,23 +38,23 @@ function result = KruppaCostFun(initParams)
             [~,~,V] = svd(Fs(:,:,i,j)');
             Vtranspose = V';
             % get last column of V transpose which is the epipole
-            e_ji = Vtranspose(:,end);
+            e_ji = V(:,end);
             
-            eqs2 = e_ji * Winv * e_ji';
+            % conver ep_ji to skew matrix form to allow cross product 
+            e_jiMatrixForm = [0,-e_ji(3),e_ji(2); e_ji(3),0,-e_ji(1);-e_ji(2),e_ji(1),0];
+            
+            eqs2 = e_jiMatrixForm * Winv * e_jiMatrixForm';
             eqs2Norm = norm(eqs2,'fro');
             
-            % Cost function 
-            result = result + eqs/eqsNorm - eqs2/eqs2Norm;
+            % Cost function Classical
+            result = (eqs/eqsNorm - eqs2/eqs2Norm);
+            disp(size(result));
             
             
         end
 
     end
 
-
-
-     % initalised output result
-     result = 0 
  
 
 end
