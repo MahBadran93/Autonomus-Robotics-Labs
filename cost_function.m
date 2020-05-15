@@ -1,4 +1,4 @@
-function result = cost_function(initParam)
+function result = MendoncaCipollaCostfunction(initParam)
 
     global Fs;
     

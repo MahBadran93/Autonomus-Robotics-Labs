@@ -1,12 +1,13 @@
-function result = cost_function(initParam)
+function result = MendoncaCipollaCostfunction(initParam)
 
     global Fs;
     
     % reshape to 3x3 because the iniParam is sent as 1x5 vector with the
     % values to be optimised
-    CameraIntrinsics = [initParam(1) initParam(2) initParam(3); 0 initParam(4) initParam(5); 0 0 1];
+    CameraIntrinsics = [initParam(1) initParam(2) initParam(3);
+        0 initParam(4) initParam(5); 0 0 1];
     
-    result = zeros(45,1); % initalise vector with number of fund. matrices
+    result = []; % initalise vector with number of fund. matrices
     
     count = 1;
     
@@ -21,12 +22,10 @@ function result = cost_function(initParam)
             end    
             Essintial = CameraIntrinsics' * Fs(:,:,i,j) * CameraIntrinsics;    
             [~,E,~] = svd(Essintial);
-            %result(count) = (E(1,1) - E(2,2)) / (E(1,1) + E(2,2)); % first cost function 
+            %result(count) = ((E(1,1) - E(2,2)) / (E(1,1)) + E(2,2)); % first cost function 
             result(count)  = ((E(1,1) - E(2,2)) / E(2,2)); % seocnd cost function 
-         %count = count + 1;
-         %disp(count)
+            count = count + 1;
+         
         end
-        
     end
-    %disp(count) % check count of iterations whic is 45 
 end 

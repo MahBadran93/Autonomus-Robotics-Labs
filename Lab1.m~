@@ -10,7 +10,7 @@ init = [A(1,1) A(1,2) A(1,3) A(2,2) A(2,3)];
 
 %%% use levenberg-marquardt optimisation method wiht different tolerance
 %%% values 
-optimisedAlg = optimset('Algorithm','levenberg-marquardt', 'TolX',1e-20,'Tolfun',1e-20);
+optimisedAlg = optimset('Algorithm','levenberg-marquardt', 'TolX',1e-10,'Tolfun',1e-10);
 
 % use lsqnonlin for non linear opimisation, give it the cost function.
 %................. Methods...........................................
