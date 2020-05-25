@@ -37,7 +37,6 @@ function result = KruppaCostFun(initParams)
             % extracting the SVD of the fundimental matrix F_ij transposed and we obtain U,E,V 
             % matrices and e_ji is the last column of V transpose
             [~,~,V] = svd(Fs(:,:,i,j)');
-            Vtranspose = V';
             % get last column of V transpose which is the epipole
             e_ji = V(:,end);
             

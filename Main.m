@@ -8,17 +8,30 @@ format long g;
 % initial intrinsic parameters
 init = [A(1,1) A(1,2) A(1,3) A(2,2) A(2,3)];
 
-%%% use levenberg-marquardt optimisation method wiht different tolerance
-%%% values 
-optimisedAlg = optimset('Algorithm','levenberg-marquardt', 'TolX',1e-20,'Tolfun',1e-20);
-
-% use lsqnonlin for non linear opimisation, give it the cost function.
 %................. Methods...........................................
 
-%intrinsicOptimised = lsqnonlin('MendoncaCipollaCostfunction',init,[],[],optimisedAlg);
-%intrinsicOptimised = lsqnonlin('KruppaCostFun',init,[],[],optimisedAlg); 
-intrinsicOptimised = lsqnonlin('SimplifiedKruppas',init,[],[],optimisedAlg); 
+%MendoncaCipolla Method 
+%{
+optimisedAlg = optimset('Algorithm','levenberg-marquardt','TolX',1e-10);
+intrinsicOptimised = lsqnonlin('MendoncaCipollaCostfunction',init,[],[],optimisedAlg);
+%}
 
+%Kruppa's Classical
+%{
+optimisedAlg = optimset('Algorithm','levenberg-marquardt','TolX',1e-10,'TolFun',1e-10 );
+intrinsicOptimised = lsqnonlin('KruppaCostFun',init,[],[],optimisedAlg); 
+%}
+
+% Simplified Method 
+%{
+optimisedAlg = optimset('Algorithm','levenberg-marquardt','TolX',1e-20, 'TolFun',1e-12 );
+intrinsicOptimised = lsqnonlin('SimplifiedKruppas',init,[],[],optimisedAlg); 
+%}
+
+%QAD Method 
+optimisedAlg = optimset('Algorithm','levenberg-marquardt','TolX',1e-10);
+intrinsicOptimised = lsqnonlin('DacCostFunction',init,[],[], optimisedAlg);
+%intrinsicOptimised = lsqnonlin('VectorPlaneAtInfinity',init,[],[], optimisedAlg);
 
 
 % save the vector values to matrix form 
